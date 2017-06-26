@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="header">
+    <header>
+      <button (click)="logout()" class="btn btn-danger pull-right">Logout</button>
+      <h1>Bid Now!</h1>
+    </header>
+
+  </div>
+  <div class="mar-top">
+    <div class="row">
+      <div class="col-md-4">
+        <app-prod1 (sendBidStatus)="receiveStatusP1($event)"></app-prod1>
+      </div>
+
+      <div class="col-md-4">
+        <app-prod2 (sendBidStatus)="receiveStatusP2($event)"></app-prod2>
+      </div>
+
+      <div class="col-md-4">
+        <app-prod3 (sendBidStatus)="receiveStatusP3($event)"></app-prod3>
+      </div>
+    </div>
+  </div>
+  <button type="button" (click)="endBid()" class="btn btn-danger pull-right">End Bid</button>
+
+</div>
