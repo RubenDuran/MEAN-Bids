@@ -45,8 +45,44 @@ export class Prod2Component implements OnInit {
   }
   addBid() {
 
-    if (this.bids.length > 0) {
-      if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+      if (this.bids.length > 0) {
+      //   if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+        if (this.bid['amount'] > this.bids[0]['amount']) {
+          this._bidsService.createBid(this.bid)
+            .then((data) => {
+              this.bidStatus = true;
+              this.sendBidStatus.emit(this.bidStatus);
+              var arr = [];
+              if (data.errors) {
+                for (var key in data.errors) {
+                  arr.push(data.errors[key].message);
+                  this.errors = arr;
+                }
+              } else {
+                this._bidsService.getBid(this.bid)
+                  .then((data) => {
+                    this.errors = [];
+                    this.bids.unshift({
+                      name: data[0]['_bidder']['name'],
+                      amount: data[0]['amount']
+                    })
+                    console.log("the new bids", this.bids)
+                  })
+                  .catch((data) => {
+                    console.log(this.bids)
+                  });//end of get bid
+                this._router.navigate(['bids']);
+              }
+            })
+            .catch((data) => console.log(data));
+          //end of createbid
+
+        }//end of second if
+        else {
+          this.errors.push('Bid amount should be higher than the previous bid');
+        }
+      } //end of first if
+      else {
         this._bidsService.createBid(this.bid)
           .then((data) => {
             this.bidStatus = true;
@@ -60,7 +96,6 @@ export class Prod2Component implements OnInit {
             } else {
               this._bidsService.getBid(this.bid)
                 .then((data) => {
-                  this.bidStatus = true;
                   this.errors = [];
                   this.bids.push({
                     name: data[0]['_bidder']['name'],
@@ -75,41 +110,6 @@ export class Prod2Component implements OnInit {
           })
           .catch((data) => console.log(data));
         //end of createbid
-
-      }//end of second if
-      else {
-        this.errors.push('Bid amount should be higher than the previous bid');
-      }
-    } //end of first if
-    else {
-      this._bidsService.createBid(this.bid)
-        .then((data) => {
-          this.bidStatus = true;
-          this.sendBidStatus.emit(this.bidStatus);
-          var arr = [];
-          if (data.errors) {
-            for (var key in data.errors) {
-              arr.push(data.errors[key].message);
-              this.errors = arr;
-            }
-          } else {
-            this._bidsService.getBid(this.bid)
-              .then((data) => {
-
-                this.errors = [];
-                this.bids.push({
-                  name: data[0]['_bidder']['name'],
-                  amount: data[0]['amount']
-                })
-              })
-              .catch((data) => {
-                console.log(this.bids)
-              });//end of get bid
-            this._router.navigate(['bids']);
-          }
-        })
-        .catch((data) => console.log(data));
-      //end of createbid
-    } //end of else
-  }
+      } //end of else
+    }
 }

@@ -469,7 +469,8 @@ var Prod1Component = (function () {
     Prod1Component.prototype.addBid = function () {
         var _this = this;
         if (this.bids.length > 0) {
-            if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+            //   if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+            if (this.bid['amount'] > this.bids[0]['amount']) {
                 this._bidsService.createBid(this.bid)
                     .then(function (data) {
                     _this.bidStatus = true;
@@ -485,10 +486,11 @@ var Prod1Component = (function () {
                         _this._bidsService.getBid(_this.bid)
                             .then(function (data) {
                             _this.errors = [];
-                            _this.bids.push({
+                            _this.bids.unshift({
                                 name: data[0]['_bidder']['name'],
                                 amount: data[0]['amount']
                             });
+                            console.log("the new bids", _this.bids);
                         })
                             .catch(function (data) {
                             console.log(_this.bids);
@@ -641,7 +643,8 @@ var Prod2Component = (function () {
     Prod2Component.prototype.addBid = function () {
         var _this = this;
         if (this.bids.length > 0) {
-            if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+            //   if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+            if (this.bid['amount'] > this.bids[0]['amount']) {
                 this._bidsService.createBid(this.bid)
                     .then(function (data) {
                     _this.bidStatus = true;
@@ -656,12 +659,12 @@ var Prod2Component = (function () {
                     else {
                         _this._bidsService.getBid(_this.bid)
                             .then(function (data) {
-                            _this.bidStatus = true;
                             _this.errors = [];
-                            _this.bids.push({
+                            _this.bids.unshift({
                                 name: data[0]['_bidder']['name'],
                                 amount: data[0]['amount']
                             });
+                            console.log("the new bids", _this.bids);
                         })
                             .catch(function (data) {
                             console.log(_this.bids);
@@ -816,10 +819,9 @@ var Prod3Component = (function () {
     };
     Prod3Component.prototype.addBid = function () {
         var _this = this;
-        console.log("in prod1 addBid function");
-        console.log(this.bids);
         if (this.bids.length > 0) {
-            if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+            //   if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+            if (this.bid['amount'] > this.bids[0]['amount']) {
                 this._bidsService.createBid(this.bid)
                     .then(function (data) {
                     _this.bidStatus = true;
@@ -830,17 +832,16 @@ var Prod3Component = (function () {
                             arr.push(data.errors[key].message);
                             _this.errors = arr;
                         }
-                        console.log('errors in component', _this.errors);
                     }
                     else {
-                        console.log("login success");
                         _this._bidsService.getBid(_this.bid)
                             .then(function (data) {
                             _this.errors = [];
-                            _this.bids.push({
+                            _this.bids.unshift({
                                 name: data[0]['_bidder']['name'],
                                 amount: data[0]['amount']
                             });
+                            console.log("the new bids", _this.bids);
                         })
                             .catch(function (data) {
                             console.log(_this.bids);
@@ -866,10 +867,8 @@ var Prod3Component = (function () {
                         arr.push(data.errors[key].message);
                         _this.errors = arr;
                     }
-                    console.log('errors in component', _this.errors);
                 }
                 else {
-                    console.log("login success");
                     _this._bidsService.getBid(_this.bid)
                         .then(function (data) {
                         _this.errors = [];

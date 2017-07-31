@@ -36,7 +36,9 @@ module.exports = {
     getBids: function(req, res) {
         Bid.find({
             product: req.body.product
-        }).populate('_bidder').exec(function(err, prods) {
+        }).populate('_bidder').sort({
+            $natural: -1
+        }).exec(function(err, prods) {
             if (err) {
                 res.json(err);
             } else {

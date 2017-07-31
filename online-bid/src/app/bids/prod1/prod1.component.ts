@@ -44,7 +44,8 @@ export class Prod1Component implements OnInit {
   }
   addBid() {
     if (this.bids.length > 0) {
-      if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+    //   if (this.bid['amount'] > this.bids[this.bids.length - 1]['amount']) {
+      if (this.bid['amount'] > this.bids[0]['amount']) {
         this._bidsService.createBid(this.bid)
           .then((data) => {
             this.bidStatus = true;
@@ -59,10 +60,11 @@ export class Prod1Component implements OnInit {
               this._bidsService.getBid(this.bid)
                 .then((data) => {
                   this.errors = [];
-                  this.bids.push({
+                  this.bids.unshift({
                     name: data[0]['_bidder']['name'],
                     amount: data[0]['amount']
                   })
+                  console.log("the new bids", this.bids)
                 })
                 .catch((data) => {
                   console.log(this.bids)
